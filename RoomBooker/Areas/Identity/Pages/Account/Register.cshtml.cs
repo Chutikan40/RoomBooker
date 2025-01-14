@@ -111,6 +111,15 @@ namespace RoomBooker.Areas.Identity.Pages.Account
         {
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
+            // ตรวจสอบว่าฟิลด์ Email ไม่เป็นค่าว่าง
+            if (string.IsNullOrEmpty(Input.Email))
+            {
+                ModelState.AddModelError(string.Empty, "Email is required.");
+                return Page();
+            }
+
+            // ตรวจสอบความถูกต้องของ ModelState
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
@@ -145,15 +154,19 @@ namespace RoomBooker.Areas.Identity.Pages.Account
                         return LocalRedirect(returnUrl);
                     }
                 }
+
+                // เพิ่มข้อความผิดพลาดหากการสร้างผู้ใช้ล้มเหลว
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
 
-            // If we got this far, something failed, redisplay form
+            // หากข้อมูลไม่ผ่านการตรวจสอบ หรือเกิดข้อผิดพลาดใดๆ ให้กลับไปที่ฟอร์ม
             return Page();
         }
+
+
 
         private RoomBookerUser CreateUser()
         {

@@ -11,7 +11,7 @@ namespace RoomBooker.Areas.Identity.Data;
 public class RoomBookerUser : IdentityUser
 {
     [Required]
-    public string? Email {  get; set; }
+    public new required string Email {  get; set; }
     [Required]
     public string? Password { get; set; }
 }

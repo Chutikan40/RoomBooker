@@ -26,7 +26,7 @@ public class ApplicationUserEntityConfiguration : IEntityTypeConfiguration<RoomB
 {
     public void Configure(EntityTypeBuilder<RoomBookerUser> builder)
     {
-        builder.Property(x => x.Email).IsRequired();
+        builder.Property(u => u.Email).HasMaxLength(256).IsRequired();
         builder.Property(x => x.Password).IsRequired();
     }
 }
